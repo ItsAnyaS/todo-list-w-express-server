@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import TodoInput from './components/TodoInput';
+import TodoList from "./components/TodoList";
 import './App.css';
+import {useState} from 'react'
 
 function App() {
+    const [taskList, setTaskList] = useState([]);
+    const [test, setTest] = useState([])
+    const getData = async () => {
+      let req = await fetch("http://localhost:8888/todos");
+      let res = await req.json()
+      setTest(res)
+    }
+    getData()
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <h1>To-do App</h1>
+    <TodoInput setTaskList={setTaskList}/>
+    <TodoList taskList={taskList}/>
+    <p>{test.map(element => {
+
+      return <li>{element.message}</li>;
+    })}</p>
     </div>
   );
 }
